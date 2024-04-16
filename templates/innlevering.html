@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Innlevering av bøker og tidsskrifter</title>
+</head>
+<body>
+<h1>Innlevering av bøker og tidsskrifter</h1>
+<p>Velg hvilken bok eller tidsskrift du ønsker å levere inn:</p>
+<form action="{{ url_for('innlevering') }}" method="POST">
+    {% if loans_bøker %}
+        <h3>Bøker:</h3>
+        {% for loan in loans_bøker %}
+            <input type="checkbox" id="bok_{{ loan.LånID }}" name="item_id" value="bok_{{ loan.LånID }}">
+            <label for="bok_{{ loan.LånID }}">{{ loan.bok.Tittel }}</label><br>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Form for å levere inn tidsskrifter -->
+    {% if loans_tidsskrifter %}
+        <h3>Tidsskrifter:</h3>
+        {% for loan in loans_tidsskrifter %}
+            <input type="checkbox" id="tidsskrift_{{ loan.T_LånID }}" name="item_id" value="tidsskrift_{{ loan.T_LånID }}">
+            <label for="tidsskrift_{{ loan.T_LånID }}">{{ loan.tidsskrift.Tittel }}</label><br>
+        {% endfor %}
+    {% endif %}
+
+    <button type="submit">Lever inn valgte bøker og tidsskrifter</button>
+</form>
+
+<br>
+
+<h2>Siste 5 innleverte bøker og tidsskrifter:</h2>
+<table border="1">
+    <tr>
+        <th>Tittel</th>
+        <th>Innleverings dato</th>
+    </tr>
+    {% for item in last_delivered_items %}
+    <tr>
+        <td>{{ item.bok.Tittel if item.bok else item.tidsskrift.Tittel }}</td>
+        <td>{{ item.ReturDato.strftime('%Y-%m-%d') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+<a href="{{ url_for('profile') }}">Tilbake til profilsiden</a>
+</body>
+</html>

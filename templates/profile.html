@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+</head>
+<body>
+<h1>Velkommen, {{ fornavn }}{{ etternavn }}!</h1>
+<a href="{{ url_for('logout') }}">Logg ut</a>
+<br>
+<a href="{{ url_for('innlevering') }}">Innlevering av bøker og tidsskrifter</a>
+</body>
+</html>
