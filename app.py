@@ -36,7 +36,8 @@ def load_user(user_id):
 
 @app.route("/")
 def home():
-    return render_template('home.html')
+    time_of_day = get_time_of_day()
+    return render_template('home.html', time_of_day=time_of_day)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -63,6 +64,18 @@ def register():
     return render_template('register.html')
 
 
+def get_time_of_day():
+    now = datetime.datetime.now()
+    current_hour = now.hour
+
+    if current_hour < 12:
+        return "God morgen"
+    elif 12 <= current_hour < 18:
+        return "God ettermiddag"
+    else:
+        return "God kveld"
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -84,7 +97,8 @@ def login():
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', fornavn=current_user.fornavn, etternavn=current_user.etternavn)
+    time_of_day = get_time_of_day()
+    return render_template('profile.html', fornavn=current_user.fornavn, etternavn=current_user.etternavn, time_of_day=time_of_day)
 
 
 @app.route("/logout")
@@ -137,6 +151,7 @@ class LånteTidsskrifter(db.Model):
     # Definerer relasjonen til Tidsskrifter
     tidsskrift = relationship("Tidsskrifter", back_populates="lånte_tidsskrifter")
 
+
 @app.route('/innlevering', methods=['GET', 'POST'])
 @login_required
 def innlevering():
@@ -157,9 +172,10 @@ def innlevering():
     loans_tidsskrifter = LånteTidsskrifter.query.filter_by(StudentID=current_user.id, Levert=False).all()
     last_delivered_items = LånteBøker.query.filter_by(StudentID=current_user.id, Levert=True).order_by(
         LånteBøker.ReturDato.desc()).limit(5).all() + \
-        LånteTidsskrifter.query.filter_by(StudentID=current_user.id, Levert=True).order_by(
-            LånteTidsskrifter.ReturDato.desc()).limit(5).all()
-    return render_template('innlevering.html', loans_bøker=loans_bøker, loans_tidsskrifter=loans_tidsskrifter, last_delivered_items=last_delivered_items)
+                           LånteTidsskrifter.query.filter_by(StudentID=current_user.id, Levert=True).order_by(
+                               LånteTidsskrifter.ReturDato.desc()).limit(5).all()
+    return render_template('innlevering.html', loans_bøker=loans_bøker, loans_tidsskrifter=loans_tidsskrifter,
+                           last_delivered_items=last_delivered_items)
 
 
 if __name__ == "__main__":
