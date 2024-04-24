@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<title>Tilgjengelige Bøker</title>
+<link href="https://fonts.googleapis.com/css?family=Segoe+UI:regular,600&display=swap" rel="stylesheet">
+<style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        button, a.button {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover, a.button:hover {
+            background-color: #0056b3;
+        }
+        .book-item {
+            margin: 10px 0;
+        }
+        .book-label {
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .rating {
+            cursor: pointer;
+            color: gold;
+        }
+        .rating span:hover,
+        .rating span:hover ~ span {
+            color: grey;
+        }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Tilgjengelige Bøker for Lån</h1>
+<form action="{{ url_for('borrow_book') }}" method="post" id="borrow-form">
+            {% for book in books %}
+<div class="book-item">
+<input type="radio" name="isbn" value="{{ book.ISBN }}" id="book{{ book.ISBN }}">
+<label for="book{{ book.ISBN }}" class="book-label">{{ book.Tittel }} av {{ book.Forfatter }} ({{ book.Sjanger }})</label>
+<div class="rating" id="rating-{{ book.ISBN }}">
+<span onclick="setRating(1, '{{ book.ISBN }}')">&#9733;</span>
+<span onclick="setRating(2, '{{ book.ISBN }}')">&#9733;</span>
+<span onclick="setRating(3, '{{ book.ISBN }}')">&#9733;</span>
+<span onclick="setRating(4, '{{ book.ISBN }}')">&#9733;</span>
+<span onclick="setRating(5, '{{ book.ISBN }}')">&#9733;</span>
+<input type="hidden" id="rating-input-{{ book.ISBN }}" name="rating" value="">
+</div>
+</div>
+            {% endfor %}
+<button type="submit" form="borrow-form">Lån Valgt Bok</button>
+</form>
+<a href="{{ url_for('profile') }}" class="button">← Tilbake til Profil</a>
+        {% if not books %}
+<p>Ingen bøker tilgjengelige for øyeblikket.</p>
+        {% endif %}
+</div>
+<script>
+// JavaScript-funksjonen for å sette vurdering
+function setRating(rating, isbn) {
+    document.getElementById('rating-input-' + isbn).value = rating;
+}
+</script>
+</body>
+</html>

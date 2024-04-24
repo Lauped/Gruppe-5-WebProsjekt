@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <title>Slett Bøker</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        .delete-button {
+            background-color: #FF6347; /* Tomato */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #E53E3E; /* Red-600 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Slett Bøker</h1>
+        <table>
+            <tr>
+                <th>ISBN</th>
+                <th>Tittel</th>
+                <th>Forfatter</th>
+                <th>Sjanger</th>
+                <th>Slett</th>
+            </tr>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.ISBN }}</td>
+                <td>{{ book.Tittel }}</td>
+                <td>{{ book.Forfatter }}</td>
+                <td>{{ book.Sjanger }}</td>
+                <td>
+                    <form action="{{ url_for('delete_book', isbn=book.ISBN) }}" method="POST">
+                        <button type="submit" class="delete-button">Slett</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">Ingen bøker funnet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('profile') }}">Tilbake til profil</a>
+    </div>
+</body>
+</html>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
     <meta charset="UTF-8">
-    <title>Logg Inn</title>
+    <title>Legg til bok</title>
     <style>
         body {
             display: flex;
@@ -15,27 +15,25 @@
         }
         .container {
             width: 90%;
-            max-width: 320px;
-            text-align: left;
+            max-width: 600px;
+            text-align: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             padding: 40px;
             background: white;
             border-radius: 8px;
-            margin-top: 20px; /* Just to ensure it doesn't touch the top of the viewport */
         }
         form {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            gap: 10px; /* Avstand mellom elementene /
         }
-        label {
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="email"], input[type="password"] {
+        input[type="text"], input[type="number"] {
             padding: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px; / Plass under hvert inputfelt /
             border: 1px solid #ccc;
             border-radius: 5px;
+            width: 80%; / Bredde på inputfeltene */
         }
         button {
             background-color: #007BFF;
@@ -53,17 +51,15 @@
 </head>
 <body>
     <div class="container">
+        <h1>Legg til bok i biblioteket</h1>
         <form method="post">
-            <label for="email">E-post:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="password">Passord:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Logg inn</button>
+            <input type="text" name="Tittel" placeholder="Tittel" required>
+            <input type="text" name="Forfatter" placeholder="Forfatter" required>
+            <input type="number" name="ISBN" placeholder="ISBN" required>
+            <input type="text" name="Sjanger" placeholder="Sjanger">
+            <button type="submit">Legg til bok</button>
         </form>
+         <a href="{{ url_for('profile') }}">Tilbake til profil</a>
     </div>
 </body>
 </html>
-
-
-
-
